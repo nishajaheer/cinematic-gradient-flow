@@ -1,48 +1,51 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Float } from "@react-three/drei";
 
-// Simplified 3D Skill Icons Component
-const SkillOrb = ({ position, color, delay }: { 
-  position: [number, number, number]; 
-  color: string;
-  delay: number;
-}) => {
-  return (
-    <Float speed={1 + delay} rotationIntensity={1} floatIntensity={2}>
-      <mesh position={position}>
-        <sphereGeometry args={[0.8, 32, 32]} />
-        <meshStandardMaterial color={color} metalness={0.8} roughness={0.2} />
-      </mesh>
-    </Float>
-  );
-};
-
-const Skills3D = () => {
+// CSS-based Skill Visualization
+const SkillsAnimation = () => {
   const skills = [
-    { color: "#61DAFB", position: [-3, 2, 0] as [number, number, number] },
-    { color: "#000000", position: [3, 1, 0] as [number, number, number] },
-    { color: "#3178C6", position: [0, 3, -2] as [number, number, number] },
-    { color: "#339933", position: [-2, -1, 1] as [number, number, number] },
-    { color: "#3776AB", position: [2, -2, 0] as [number, number, number] },
-    { color: "#336791", position: [0, 0, 2] as [number, number, number] },
+    { name: "React", color: "bg-blue-400", position: "top-1/4 left-1/4" },
+    { name: "Three.js", color: "bg-gray-800", position: "top-1/3 right-1/4" },
+    { name: "TypeScript", color: "bg-blue-600", position: "top-1/2 left-1/6" },
+    { name: "Node.js", color: "bg-green-500", position: "bottom-1/3 right-1/3" },
+    { name: "Python", color: "bg-yellow-500", position: "bottom-1/4 left-1/3" },
+    { name: "PostgreSQL", color: "bg-blue-700", position: "top-2/3 center" },
   ];
 
   return (
-    <>
+    <div className="relative h-96 bg-gradient-to-br from-background to-secondary/20 rounded-2xl overflow-hidden">
       {skills.map((skill, index) => (
-        <SkillOrb
-          key={index}
-          position={skill.position}
-          color={skill.color}
-          delay={index * 0.2}
-        />
+        <motion.div
+          key={skill.name}
+          className={`absolute w-16 h-16 ${skill.color} ${skill.position} rounded-full flex items-center justify-center text-white font-bold text-xs shadow-lg`}
+          initial={{ opacity: 0, scale: 0 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ 
+            duration: 0.6, 
+            delay: index * 0.2,
+            type: "spring",
+            stiffness: 200 
+          }}
+          animate={{
+            y: [0, -20, 0],
+            rotate: [0, 360],
+            transition: {
+              y: { duration: 3 + index, repeat: Infinity, ease: "easeInOut" },
+              rotate: { duration: 10 + index * 2, repeat: Infinity, ease: "linear" },
+            }
+          }}
+          whileHover={{ scale: 1.2, z: 10 }}
+        >
+          <span className="text-center leading-none">
+            {skill.name.split('').slice(0, 2).join('')}
+          </span>
+        </motion.div>
       ))}
-      <ambientLight intensity={0.6} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} color="#dc2743" />
-    </>
+      
+      {/* Central glow effect */}
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-instagram-gradient rounded-full opacity-20 blur-2xl animate-pulse" />
+    </div>
   );
 };
 
@@ -95,33 +98,15 @@ export const SkillsSection = () => {
           </p>
         </motion.div>
 
-        {/* 3D Skills Visualization */}
+        {/* CSS-based Skills Visualization */}
         <motion.div
-          className="h-96 mb-16"
+          className="mb-16"
           initial={{ opacity: 0, scale: 0.8 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          <Canvas 
-            camera={{ position: [0, 0, 8], fov: 60 }}
-            gl={{ antialias: true, alpha: true }}
-            onCreated={({ gl }) => {
-              gl.setClearColor('#000000', 0);
-            }}
-          >
-            <Suspense fallback={null}>
-              <Skills3D />
-              <OrbitControls 
-                enableZoom={false} 
-                enablePan={false} 
-                autoRotate 
-                autoRotateSpeed={2}
-                enableDamping
-                dampingFactor={0.05}
-              />
-            </Suspense>
-          </Canvas>
+          <SkillsAnimation />
         </motion.div>
 
         {/* Skill Categories */}

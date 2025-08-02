@@ -1,42 +1,41 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { motion } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Float, Sphere } from "@react-three/drei";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, Instagram, Youtube, Twitter } from "lucide-react";
 
-// 3D Floating Orbs Component
+// CSS-based Floating Orbs Component
 const FloatingOrbs = () => {
+  const orbs = [
+    { color: "bg-instagram-orange", size: "w-16 h-16", position: "top-1/4 left-1/4", delay: "0s" },
+    { color: "bg-instagram-red", size: "w-12 h-12", position: "top-1/3 right-1/4", delay: "1s" },
+    { color: "bg-instagram-pink", size: "w-20 h-20", position: "top-1/2 left-1/6", delay: "2s" },
+    { color: "bg-instagram-purple", size: "w-14 h-14", position: "bottom-1/3 right-1/3", delay: "1.5s" },
+    { color: "bg-instagram-deep-purple", size: "w-18 h-18", position: "bottom-1/4 left-1/3", delay: "0.5s" },
+  ];
+
   return (
-    <>
-      <Float speed={1.4} rotationIntensity={1} floatIntensity={2}>
-        <Sphere args={[0.5, 32, 32]} position={[-2, 1, 0]}>
-          <meshStandardMaterial color="#f09433" />
-        </Sphere>
-      </Float>
-      <Float speed={1.8} rotationIntensity={1.5} floatIntensity={1.5}>
-        <Sphere args={[0.3, 32, 32]} position={[2, -1, 0]}>
-          <meshStandardMaterial color="#e6683c" />
-        </Sphere>
-      </Float>
-      <Float speed={1.2} rotationIntensity={2} floatIntensity={3}>
-        <Sphere args={[0.4, 32, 32]} position={[0, 2, -1]}>
-          <meshStandardMaterial color="#dc2743" />
-        </Sphere>
-      </Float>
-      <Float speed={2} rotationIntensity={0.5} floatIntensity={2.5}>
-        <Sphere args={[0.6, 32, 32]} position={[1.5, 0, 1]}>
-          <meshStandardMaterial color="#cc2366" />
-        </Sphere>
-      </Float>
-      <Float speed={1.6} rotationIntensity={1.8} floatIntensity={1.8}>
-        <Sphere args={[0.35, 32, 32]} position={[-1, -2, 0.5]}>
-          <meshStandardMaterial color="#bc1888" />
-        </Sphere>
-      </Float>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-    </>
+    <div className="absolute inset-0 overflow-hidden opacity-20">
+      {orbs.map((orb, index) => (
+        <motion.div
+          key={index}
+          className={`absolute ${orb.color} ${orb.size} ${orb.position} rounded-full blur-sm`}
+          animate={{
+            y: [0, -30, 0],
+            x: [0, 15, -15, 0],
+            scale: [1, 1.2, 0.8, 1],
+          }}
+          transition={{
+            duration: 6 + index,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: parseFloat(orb.delay),
+          }}
+          style={{
+            background: `radial-gradient(circle, ${orb.color.replace('bg-', 'hsl(var(--')} / 0.8), transparent)`,
+          }}
+        />
+      ))}
+    </div>
   );
 };
 
@@ -84,28 +83,8 @@ export const HeroSection = () => {
         <div className="gradient-blob"></div>
       </div>
 
-      {/* 3D Canvas Background */}
-      <div className="absolute inset-0 opacity-30">
-        <Canvas 
-          camera={{ position: [0, 0, 5], fov: 45 }}
-          gl={{ antialias: true, alpha: true }}
-          onCreated={({ gl }) => {
-            gl.setClearColor('#000000', 0);
-          }}
-        >
-          <Suspense fallback={null}>
-            <FloatingOrbs />
-            <OrbitControls 
-              enableZoom={false} 
-              enablePan={false} 
-              autoRotate 
-              autoRotateSpeed={0.5}
-              enableDamping
-              dampingFactor={0.05}
-            />
-          </Suspense>
-        </Canvas>
-      </div>
+      {/* CSS-based Floating Background */}
+      <FloatingOrbs />
 
       {/* Hero Content */}
       <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
