@@ -1,13 +1,12 @@
 import React, { Suspense } from "react";
 import { motion } from "framer-motion";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Float, Text3D, Center } from "@react-three/drei";
+import { OrbitControls, Float } from "@react-three/drei";
 
-// 3D Skill Icons Component
-const SkillOrb = ({ position, color, label, delay }: { 
+// Simplified 3D Skill Icons Component
+const SkillOrb = ({ position, color, delay }: { 
   position: [number, number, number]; 
-  color: string; 
-  label: string;
+  color: string;
   delay: number;
 }) => {
   return (
@@ -16,39 +15,27 @@ const SkillOrb = ({ position, color, label, delay }: {
         <sphereGeometry args={[0.8, 32, 32]} />
         <meshStandardMaterial color={color} metalness={0.8} roughness={0.2} />
       </mesh>
-      <Center position={[position[0], position[1] - 1.5, position[2]]}>
-        <Text3D
-          font="/fonts/helvetiker_regular.typeface.json"
-          size={0.2}
-          height={0.05}
-          letterSpacing={0.02}
-        >
-          {label}
-          <meshStandardMaterial color="#ffffff" />
-        </Text3D>
-      </Center>
     </Float>
   );
 };
 
 const Skills3D = () => {
   const skills = [
-    { label: "React", color: "#61DAFB", position: [-3, 2, 0] as [number, number, number] },
-    { label: "Three.js", color: "#000000", position: [3, 1, 0] as [number, number, number] },
-    { label: "TypeScript", color: "#3178C6", position: [0, 3, -2] as [number, number, number] },
-    { label: "Node.js", color: "#339933", position: [-2, -1, 1] as [number, number, number] },
-    { label: "Python", color: "#3776AB", position: [2, -2, 0] as [number, number, number] },
-    { label: "PostgreSQL", color: "#336791", position: [0, 0, 2] as [number, number, number] },
+    { color: "#61DAFB", position: [-3, 2, 0] as [number, number, number] },
+    { color: "#000000", position: [3, 1, 0] as [number, number, number] },
+    { color: "#3178C6", position: [0, 3, -2] as [number, number, number] },
+    { color: "#339933", position: [-2, -1, 1] as [number, number, number] },
+    { color: "#3776AB", position: [2, -2, 0] as [number, number, number] },
+    { color: "#336791", position: [0, 0, 2] as [number, number, number] },
   ];
 
   return (
     <>
       {skills.map((skill, index) => (
         <SkillOrb
-          key={skill.label}
+          key={index}
           position={skill.position}
           color={skill.color}
-          label={skill.label}
           delay={index * 0.2}
         />
       ))}
@@ -116,10 +103,23 @@ export const SkillsSection = () => {
           viewport={{ once: true }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          <Canvas camera={{ position: [0, 0, 8], fov: 60 }}>
+          <Canvas 
+            camera={{ position: [0, 0, 8], fov: 60 }}
+            gl={{ antialias: true, alpha: true }}
+            onCreated={({ gl }) => {
+              gl.setClearColor('#000000', 0);
+            }}
+          >
             <Suspense fallback={null}>
               <Skills3D />
-              <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={2} />
+              <OrbitControls 
+                enableZoom={false} 
+                enablePan={false} 
+                autoRotate 
+                autoRotateSpeed={2}
+                enableDamping
+                dampingFactor={0.05}
+              />
             </Suspense>
           </Canvas>
         </motion.div>

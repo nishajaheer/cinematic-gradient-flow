@@ -86,10 +86,23 @@ export const HeroSection = () => {
 
       {/* 3D Canvas Background */}
       <div className="absolute inset-0 opacity-30">
-        <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
+        <Canvas 
+          camera={{ position: [0, 0, 5], fov: 45 }}
+          gl={{ antialias: true, alpha: true }}
+          onCreated={({ gl }) => {
+            gl.setClearColor('#000000', 0);
+          }}
+        >
           <Suspense fallback={null}>
             <FloatingOrbs />
-            <OrbitControls enableZoom={false} enablePan={false} autoRotate autoRotateSpeed={0.5} />
+            <OrbitControls 
+              enableZoom={false} 
+              enablePan={false} 
+              autoRotate 
+              autoRotateSpeed={0.5}
+              enableDamping
+              dampingFactor={0.05}
+            />
           </Suspense>
         </Canvas>
       </div>
