@@ -61,7 +61,25 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				// Instagram gradient colors
+				instagram: {
+					orange: 'hsl(var(--instagram-orange))',
+					red: 'hsl(var(--instagram-red))',
+					pink: 'hsl(var(--instagram-pink))',
+					purple: 'hsl(var(--instagram-purple))',
+					'deep-purple': 'hsl(var(--instagram-deep-purple))'
 				}
+			},
+			backgroundImage: {
+				'instagram-gradient': 'var(--gradient-instagram)',
+				'glow-gradient': 'var(--gradient-glow)',
+				'text-gradient': 'var(--gradient-text)'
+			},
+			boxShadow: {
+				'glow': 'var(--shadow-glow)',
+				'instagram': 'var(--shadow-instagram)',
+				'elevate': 'var(--shadow-elevate)'
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -84,11 +102,42 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				'float': {
+					'0%, 100%': { transform: 'translateY(0px)' },
+					'50%': { transform: 'translateY(-20px)' }
+				},
+				'gradient-shift': {
+					'0%, 100%': { backgroundPosition: '0% 50%' },
+					'50%': { backgroundPosition: '100% 50%' }
+				},
+				'pulse-glow': {
+					'0%, 100%': { boxShadow: '0 0 20px hsl(var(--instagram-purple) / 0.4)' },
+					'50%': { boxShadow: '0 0 40px hsl(var(--instagram-purple) / 0.8)' }
+				},
+				'blob-movement': {
+					'0%, 100%': { transform: 'translate(0px, 0px) scale(1)' },
+					'33%': { transform: 'translate(30px, -50px) scale(1.1)' },
+					'66%': { transform: 'translate(-20px, 20px) scale(0.9)' }
+				},
+				'fade-in-up': {
+					'0%': { opacity: '0', transform: 'translateY(30px)' },
+					'100%': { opacity: '1', transform: 'translateY(0)' }
+				},
+				'scale-in': {
+					'0%': { opacity: '0', transform: 'scale(0.9)' },
+					'100%': { opacity: '1', transform: 'scale(1)' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'float': 'float 6s ease-in-out infinite',
+				'gradient-shift': 'gradient-shift 3s ease-in-out infinite',
+				'pulse-glow': 'pulse-glow 2s ease-in-out infinite',
+				'blob-movement': 'blob-movement 20s infinite linear',
+				'fade-in-up': 'fade-in-up 0.6s ease-out',
+				'scale-in': 'scale-in 0.3s ease-out'
 			}
 		}
 	},

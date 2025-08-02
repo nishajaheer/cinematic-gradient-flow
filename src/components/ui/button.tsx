@@ -18,11 +18,16 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        instagram: "btn-instagram text-white font-bold tracking-wide",
+        hero: "relative px-8 py-4 rounded-full bg-transparent border-2 border-instagram-purple text-white font-bold tracking-wide transition-all duration-300 hover:bg-instagram-purple hover:shadow-glow hover:scale-105",
+        magnetic: "magnetic-hover bg-instagram-gradient text-white font-semibold border-0 shadow-instagram",
+        glow: "bg-background border border-instagram-purple text-instagram-purple hover:bg-instagram-purple hover:text-white transition-all duration-300 animate-pulse-glow"
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
+        xl: "h-14 rounded-full px-12 text-lg",
         icon: "h-10 w-10",
       },
     },
